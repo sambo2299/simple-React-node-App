@@ -25,12 +25,24 @@ class App extends Component {
         alert('button clicked' + img + ' for ' + evt)
     }
     
+    downloadHandler = (img) => {
+
+    }
+
+    imageUrl = (image) => {
+        
+        return `http://localhost:4000/media/${image}`
+    }
+
     render() { 
         return (
             <React.Fragment>
             <NavBar/>
             <div className="container">            
-            <Images images={this.state.images} onBtnClick={this.btnClickHandler} />
+            <Images 
+            images={this.state.images} 
+            onBtnClick={this.btnClickHandler}            
+            />
             </div>
             </React.Fragment>
         );

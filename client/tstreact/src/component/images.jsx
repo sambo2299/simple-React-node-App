@@ -15,7 +15,12 @@ class images extends Component {
         return (
         <div className="row">
         {
-            this.props.images.map((img, idx) => <ImageBlock  key={idx} image={img} onBtnClick={this.props.onBtnClick}/>)
+            this.props.images.map((img, idx) => 
+            <ImageBlock  
+            key={idx} 
+            image={img} 
+            onBtnClick={this.props.onBtnClick}           
+            />)
         }
         </div>
         );
