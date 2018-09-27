@@ -6,8 +6,7 @@ import Images from './images';
 class App extends Component {
     state = {
         images : [],        
-    };
-
+    };    
     
     componentDidMount () {
         axios.get('/api/getimages')
@@ -16,22 +15,44 @@ class App extends Component {
                 const imgs = {images : res.data };
                 this.setState(imgs);
             }
-        }).catch(er => {
+        })
+        .catch(er => {
             console.log("error", er);
         })
     }
     
     btnClickHandler = (img, evt) => {        
-        alert('button clicked' + img + ' for ' + evt)
+        switch(evt) {
+            case 'download':
+                this.downloadFile(img);
+                break;
+            case 'info':
+                this.getInfoFile(img);
+                break;
+            default:
+                console.log('no evt');
+        }        
     }
     
-    downloadHandler = (img) => {
-
+    downloadFile = (img) => {
+        axios.get(`/api/downloadImage?image=${img}`)
+        .then(res => {
+            console.log(res);
+        })
+        .catch(er => {
+            console.log("error", er);
+        });
+        
     }
 
-    imageUrl = (image) => {
-        
-        return `http://localhost:4000/media/${image}`
+    getInfoFile = (img) => {
+        axios.get('/api/getInfo?image='+img)
+        .then(res => {
+            console.log(res);
+        })
+        .catch(er => {
+            console.log("error", er);
+        })
     }
 
     render() { 
