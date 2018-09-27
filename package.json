@@ -1,0 +1,30 @@
+{
+  "name": "testserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "client": "cd client/tstreact && npm start",
+    "server": "cd server && npm start",        
+    "start": "npm run client & npm run server"
+    
+  },
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "googleapis": "^33.0.0",
+    "path": "^0.12.7",
+    "piwik-tracker": "^1.1.2",
+    "universal-analytics": "^0.4.17",
+    "vhost": "^3.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
