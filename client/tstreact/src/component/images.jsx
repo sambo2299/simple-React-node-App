@@ -19,7 +19,8 @@ class images extends Component {
             <ImageBlock  
             key={idx} 
             image={img} 
-            onBtnClick={this.props.onBtnClick}           
+            onBtnClick={(e) => {this.props.onBtnClick(img, e)} }
+            
             />)
         }
         </div>
