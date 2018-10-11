@@ -14,4 +14,6 @@ router.get('/getimages', api.getImages);
 router.get('/downloadImage', api.downloadImage);
 router.get('/getInfo', api.getInfo);
 
+router.post('/uploadfile', api.uploadFile);
+
 module.exports = router;
