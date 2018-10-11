@@ -6,7 +6,7 @@ install npm module for server and client side packages
 cd server > npm install
 cd client/tstreact > npm install
 
-add files/images to public/media
+open file config.json in lib/ directory and make changes
 
 run from project root folder npm start
 

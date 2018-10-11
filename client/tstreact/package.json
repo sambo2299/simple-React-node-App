@@ -2,13 +2,7 @@
   "name": "tstreact",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "bootstrap": "^4.1.3",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-modal": "^3.6.1",
-    "react-notifications": "^1.4.3",
-    "react-scripts": "1.1.5"
+  "dependencies": {   
   },
   "scripts": {
     "start": "react-scripts start",
@@ -16,5 +10,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://10.0.1.110:4000/"
+  "proxy": "http://localhost:4000/"
 }
