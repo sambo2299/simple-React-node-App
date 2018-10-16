@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
+import  { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
+import { NotificationManager,  NotificationContainer } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+import fileDownload from "js-file-download";
+
 import NavBar from './navbar';
 import Images from './images';
 import ModalView from './modal';
-import { NotificationManager,  NotificationContainer } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
+import About from './aboutus';
+import Contact from './contactus';
+import Footer from './footer';
+
 class App extends Component {
     state = {
-        images : [],  
-        info: [],   
-        modalView : '',   
-        file: null,
+        images:     [],  
+        info:       [],   
+        modalView:  '',   
+        file:       null        
     };    
         
     componentDidMount () {
@@ -59,8 +66,15 @@ class App extends Component {
     }
 
     downloadFile = (img) => {         
-         window.open(`http://10.0.1.110:4000/api/downloadImage?image=${img}`,"_blank")
-         NotificationManager.success(`Downloaded file ${img} successfully!!!`, 'Download Complete', 3000);
+        //  window.open(`/api/downloadImage?image=${img}`,"_blank")
+        axios.get(`api/downloadImage?image=${img}`)
+        .then(r=> {            
+            fileDownload(r.data, img);
+            NotificationManager.success(`Downloaded file ${img} successfully!!!`, 'Download Complete', 3000);
+        }).catch(e=> {
+            NotificationManager.error(`Error in Downloading file ${img}!!!`, 'Error Download', 3000);
+
+        });
         }
         
         getInfoFile = (img) => {
@@ -99,14 +113,26 @@ class App extends Component {
             console.log(r);
         });
     }
+
+    
+    
+
     
     render() { 
         return (
+            <Router>
             <React.Fragment>
-            <NavBar
-            onBtnClick={this.btnClickHandler}            
-            />
-            <div className="container"><Images images={this.state.images} onBtnClick={this.btnClickHandler}/></div>
+            <NavBar onBtnClick={this.btnClickHandler} />
+            <div className="container">
+                <Route exact={true} path={'/'}
+                  render ={() => 
+                    <Images images={this.state.images} onBtnClick={this.btnClickHandler}/>                            
+                  }   
+                />
+                <Route path="/contact" component={Contact} />
+                <Route path="/about" component={About} />
+            </div>
+            <Footer />
             {
                 this.state.modalView.length > 0 && 
                 <ModalView 
@@ -119,6 +145,7 @@ class App extends Component {
             }
             <NotificationContainer />
             </React.Fragment>
+            </Router>
         );
     }
 }
