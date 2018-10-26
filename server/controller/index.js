@@ -11,7 +11,7 @@ router.use((req, res, next) => {
 });
 
 const isloggedIn = (req, res, next) => {
-    if(req.session && req.sid) {
+    if(req.session && req.session.sid) {
         next();
     } else {
         return res.status(500).send({
@@ -28,7 +28,7 @@ router.get('/getInfo', api.getInfo);
 router.post('/uploadfile',isloggedIn, api.uploadFile);
 router.post('/deleteImage',isloggedIn, api.deleteImage);
 
-router.get('/user/getUserData', user.getUserData);
+router.get('/user/getUserData', isloggedIn, user.getUserData);
 router.post('/user/login', user.userLogin);
 router.post('/user/logout',isloggedIn, user.userLogout);
 router.post('/user/signup', user.userSignup);
