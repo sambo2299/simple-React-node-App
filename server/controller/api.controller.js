@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 
 
 
-const getImages = (req, res) => { console.log('fetching all images')
+const getImages = (req, res) => {
     fs.readdir(`${config.rootDir}/public/media`, (e, l) => {
         if(e) {
             console.log(e);                     
@@ -35,7 +35,7 @@ const getImages = (req, res) => { console.log('fetching all images')
     })
 }
 
-const downloadImage = (req, res) => {
+const downloadImage = (req, res) => {    
     fs.exists(`${config.rootDir}/public/media/${req.query.image}`, exists => {
         if(exists) {
             res.download(`${config.rootDir}/public/media/${req.query.image}`);
@@ -57,7 +57,7 @@ const getInfo = (req, res) => {
 
 const upload = multer({storage:storage}).single('file');
 
-const uploadFile = (req, res) => {
+const uploadFile = (req, res) => {    
     upload(req, res, (e) => {         
         if (!req.file) {
             return res.status(500).send(e || 'file not uploaded!!!');
@@ -66,6 +66,32 @@ const uploadFile = (req, res) => {
     });
 }
 
+const deleteImage = (req, res) => {
+    fs.exists(`${config.rootDir}/public/media/${req.query.image}`, exists => {
+        if(exists) {
+            fs.unlink(`${config.rootDir}/public/media/${req.query.image}`, (e,r)=> {
+                if(e) {
+                    res.status(500).send({
+                        error:true,
+                        message: 'unable to perform deltetion'
+                    });
+                } else {
+                     return res.status(200).send({
+                            error:true,
+                            message: 'file deleted!!'
+                        });
+                    
+                }
+            })
+        } else {
+            res.status(500).send({
+                error:true,
+                message: 'image do not exists'
+            });           
+        }
+    })
+}
+
 module.exports = {
- getImages, downloadImage, getInfo, uploadFile
+ getImages, downloadImage, getInfo, uploadFile, deleteImage
 }

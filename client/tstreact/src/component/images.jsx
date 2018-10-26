@@ -20,6 +20,7 @@ class images extends Component {
             key={idx} 
             image={img} 
             onBtnClick={(e) => {this.props.onBtnClick(img, e)} }
+            userInfo={this.props.userInfo}
             
             />)
         }
