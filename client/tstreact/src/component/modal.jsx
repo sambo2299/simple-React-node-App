@@ -18,11 +18,20 @@ class modal extends Component {
         let temp = {...this.state.signIn, [name]: value}
         this.setState({signIn: temp});        
     }
-
+    
+    handleSignUpInputChange = (ev) => {       
+        let name = ev.target.name;
+        let value = ev.target.value;
+        let temp = {...this.state.signUp, [name]: value}
+        this.setState({signUp: temp});        
+    }
     handleSubmit = (ev) => {
         ev.preventDefault();
         if(ev.target.name === 'signIn') {
             this.props.onSignIn(this.state.signIn);
+        }        
+        else if(ev.target.name === 'signUp') {
+            this.props.onSignUp(this.state.signUp);
         }        
     }
 
@@ -45,21 +54,21 @@ class modal extends Component {
     
 
     signUpForm = <div>
-        <form>
+        <form name="signUp" onSubmit={this.handleSubmit}>
             <div class="form-group">
-                <label htmlFor="firstName">First Name&nbsp;:&nbsp;<input className="form-control" type="text" /></label>
+                <label htmlFor="firstName">First Name&nbsp;:&nbsp;<input name="firstName" className="form-control" type="text" onChange={this.handleSignUpInputChange} /></label>
             </div> 
             <div className="form-group">
-                <label htmlFor="lastName">Last Name&nbsp;:&nbsp;<input className="form-control" type="text" /></label>
+                <label htmlFor="lastName">Last Name&nbsp;:&nbsp;<input name="lastName" className="form-control" type="text" onChange={this.handleSignUpInputChange} /></label>
             </div>
             <div className="form-group">
-                <label htmlFor="email">Email&nbsp;:&nbsp;<input className="form-control" type="email" /></label>
+                <label htmlFor="email">Email&nbsp;:&nbsp;<input name="email" className="form-control" type="email" onChange={this.handleSignUpInputChange} /></label>
             </div>
             <div className="form-group">
-                <label htmlFor="password">Password&nbsp;:&nbsp;<input className="form-control" type="password" /></label>            
+                <label htmlFor="password">Password&nbsp;:&nbsp;<input name="password" className="form-control" type="password" onChange={this.handleSignUpInputChange}  /></label>            
             </div>
             <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password&nbsp;:&nbsp;<input className="form-control" type="password" /></label>            
+                <label htmlFor="confirmPassword">Confirm Password&nbsp;:&nbsp;<input name="confirmPassword" className="form-control" type="password" onChange={this.handleSignUpInputChange} /></label>            
             </div>
             <div className="form-group">
                 <button className="btn-sm btn-success m-2" type="submit">Sign Up</button>

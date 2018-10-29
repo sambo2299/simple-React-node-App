@@ -9,7 +9,7 @@ app.use(express.static('../public'));
 const config = require('../lib/system');
 config.express(app);
 config.session(app);
-
+config.mongo();
 
 require('./routes.js')(app);
 

@@ -107,13 +107,33 @@ class App extends Component {
     signIn = (obj) => {        
         axios.post('/api/user/logIn', obj)
             .then(res => {
-                NotificationManager.success(`sign In`, 'Signed In successfully', 3000);
+                NotificationManager.success(`signed In successfully!!!`, 'Sign In', 3000);
                 this.getUserInfo();  
                 this.closeModal();              
             })
             .catch(er => {
-                NotificationManager.error(`sign In`, 'Sign In error', 3000);
+                NotificationManager.error(`sign In error`, 'Sign In', 3000);
             });
+    }
+
+    signUp = (obj) => {console.log(obj)
+        if(obj.firstName && obj.lastName && obj.email && obj.password && obj.confirmPassword ) {
+            if(obj.confirmPassword === obj.password) {
+                axios.post('/api/user/signup',obj)
+                .then(res => {
+                    NotificationManager.success('sign up', 'Signed up successfully', 3000);
+                    this.getUserInfo();
+                    this.closeModal();
+                })
+                .catch(err => {
+                    NotificationManager.error('sign Up error', 'sign Up' , 3000);
+                });
+            } else {
+                NotificationManager.error('password missmatch!!!', 'sign Up' , 3000);
+            }
+        } else {
+            NotificationManager.error('All parameters not provided', 'sign Up' , 3000);
+        }
     }
 
     getImages = () => {
@@ -199,6 +219,7 @@ class App extends Component {
                             onUploadFile={this.uploadFile}
                             onFileChange={this.onFileChange}
                             onSignIn={this.signIn}
+                            onSignUp={this.signUp}
                         />
                     }
                     <NotificationContainer />
