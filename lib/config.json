@@ -1,4 +1,4 @@
 {
-    "rootDir": "/home/samyog/learn/simple-React-node-App/",
-    "mongo_database": "mongodb://localhost:27017/nodeReactTest"
+    "rootDir": "[Root Dir Path]",
+    "mongo_database": "[mongodb Url Src]"
 }
