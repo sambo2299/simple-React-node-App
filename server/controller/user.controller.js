@@ -15,7 +15,7 @@ const passwordHelper = require('../../lib/helper').password;
 const userLogin = (req, res) => {    
     if(req.body.email && req.body.password) {
         const query = {
-            query : { email : req.body.email }, filter : { salt: 1, hashedPassword : 1 }
+            query : { email : req.body.email }, filter : { salt: 1, hashedPassword : 1, userRole : 1 }
         }
         User.getOne(query).then(userInfo => {
             if (userInfo) {
@@ -23,6 +23,7 @@ const userLogin = (req, res) => {
                 .then(resp => { 
                     if(resp) {
                         req.session.sid = userInfo._id;    
+                        req.session.userRole = userInfo.userRole;    
                         return res.status(200).send({
                             success: true,
                             message: 'user Logged in successfully!!'
@@ -71,6 +72,7 @@ const getUserData = (req, res) => {
                 firstName: 1,
                 lastName: 1,
                 isActive: 1,
+                userRole: 1,
                 _id: 0
             }
         }
@@ -82,7 +84,8 @@ const getUserData = (req, res) => {
                     userData: {
                         fullName: `${resp.firstName} ${resp.lastName}`,                        
                         email: resp.email,
-                        isActive: resp.isActive
+                        isActive: resp.isActive,
+                        userRole: resp.userRole
                     }
                 });
             } else {
@@ -141,8 +144,16 @@ const userSignup = (req, res) => {
                                 salt: salt,
                                 hashedPassword: hashpwd
                             }
+                            if (req.query.admin && (req.query.admin === '1' || req.query.admin === 1)) {
+                                query["userRole"] = 'admin';
+                            } else if( req.query.admin && (req.query.admin != '1' || req.query.admin === 1)) {
+                                return res.status(500).send('admin cannot be registerd');
+                            }
                             User.createOne(query).then(resp => {
-                                req.session.sid = resp._id;
+                                if (!req.query.admin) {
+                                    req.session.sid = resp._id;
+                                    req.session.userRole = resp.userRole;                                    
+                                }
                                 return res.status(200).send({
                                     success: true,
                                     message: "user created successfully!!!"
@@ -186,6 +197,38 @@ const userSignup = (req, res) => {
     }
 }
 
+const getAllUsers = (req, res) => {
+    const query = {
+        query : {},
+        filter : {
+            email: 1,
+            firstName : 1,
+            lastName: 1,
+            isActive: 1,
+            userRole: 1,
+            _id: 0
+        }
+    };
+    User.getAll(query).then(resp => {
+        if(resp.length) {
+            return res.status(200).send({
+                success: true,
+                users: resp
+            });
+        } else {
+            return res.status(200).send({
+                success: true,
+                users: []
+            });
+        }
+    }).catch(err => {        
+        return res.status(500).send({
+            error: true,
+            message: 'unable to list all users'
+        });
+    })
+}
+
 module.exports = {
-    userLogin, userLogout, userSignup, getUserData
+    userLogin, userLogout, userSignup, getUserData, getAllUsers
 }

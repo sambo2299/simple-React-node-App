@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 import axios from 'axios';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import fileDownload from "js-file-download";
 
+
 import NavBar from './navbar';
 import Images from './images';
 import ModalView from './modal';
 import About from './aboutus';
+import Users from './users';
 import Contact from './contactus';
 import Footer from './footer';
+import PrivateRoute from './privateRoute';
 
 class App extends Component {
     state = {
@@ -22,8 +25,8 @@ class App extends Component {
     };
 
     componentDidMount() {
-        this.getImages();
         this.getUserInfo();
+        this.getImages();
     }
 
     downloadFile = (img) => {
@@ -67,8 +70,7 @@ class App extends Component {
         const formData = new FormData();
         formData.append('file', this.state.file);
         axios.post('/api/uploadfile', formData)
-            .then(res => {
-                console.log(res)
+            .then(res => {                
                 NotificationManager.success(`File uploaded successfully!!!`, 'File upload', 3000);
                 this.closeModal();
                 this.getImages();
@@ -78,26 +80,29 @@ class App extends Component {
                 NotificationManager.error('Unable to upload file!!!', 'File upload', 3000);
                 this.closeModal();
             })
-            .finally(r => {
-                console.log(r);
+            .finally(r => {                
             });
     }    
 
     getUserInfo = () => {
         axios.get('/api/user/getUserData')
             .then(res => {                               
-                this.setState({userInfo: res.data.userData});
+                this.setState({userInfo: res.data.userData});                
             })
             .catch(er => {
-                window.sessionStorage.removeItem('userInfo');                
+                // this.setState({userInfo: null});                                
             });
+    }
+
+    returnUserInfo = () => {
+        return this.state.userInfo;
     }
    
     signOut = () => {
         axios.post('/api/user/logOut')
             .then(res => {
                 NotificationManager.success(`sign out`, 'Signed out successfully', 3000);
-                this.setState({userInfo: null})
+                this.setState({userInfo: null})                        
             })
             .catch(er => {
                 NotificationManager.error(`sign out`, 'Sign out error', 3000);
@@ -116,7 +121,7 @@ class App extends Component {
             });
     }
 
-    signUp = (obj) => {console.log(obj)
+    signUp = (obj) => {
         if(obj.firstName && obj.lastName && obj.email && obj.password && obj.confirmPassword ) {
             if(obj.confirmPassword === obj.password) {
                 axios.post('/api/user/signup',obj)
@@ -149,6 +154,7 @@ class App extends Component {
             });
     }
 
+
     btnClickHandler = (img, evt) => {
         switch (evt) {
             case 'download':
@@ -173,7 +179,7 @@ class App extends Component {
                 this.deleteFile(img);
                 break;
             default:
-                console.log('no evt');
+                // console.log('no evt');
         }
     }
 
@@ -195,20 +201,30 @@ class App extends Component {
         this.setState({ file: e.target.files[0] });
     }
 
+
     render() {
         return (
             <Router>
                 <React.Fragment>
                     <NavBar onBtnClick={this.btnClickHandler}  userInfo={this.state.userInfo}/>
                     <div className="container">
-                        <Route exact={true} path={'/'}
+                    <Switch>
+                    <Route exact={true} path='/'
                             render={() =>
                                 <Images images={this.state.images} onBtnClick={this.btnClickHandler} userInfo={this.state.userInfo} />
                             }
+                            />
+                        <Route exact={true} path="/contact" component={Contact} />
+                        <Route exact={true} path="/about" component={About} />
+                        <PrivateRoute
+                        path="/users"
+                        exact={true}
+                        component={Users}
+                        loggedUserInfo={this.state.userInfo}
                         />
-                        <Route path="/contact" component={Contact} />
-                        <Route path="/about" component={About} />
-                    </div>
+                        <Route render={ () => <Redirect to='/' />}/>
+                        </Switch>
+                        </div>
                     <Footer />
                     {
                         this.state.modalView.length > 0 &&
@@ -228,5 +244,6 @@ class App extends Component {
         );
     }
 }
+
 
 export default App;

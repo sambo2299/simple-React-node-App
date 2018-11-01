@@ -17,6 +17,17 @@ const isloggedIn = (req, res, next) => {
         return res.status(500).send({
             error:true,
             message: 'user not logged in '
+        });
+    }
+}
+
+const isAdmin = (req, res, next) => {
+    if(req.session.userRole === 'admin') {
+        next();
+    } else {
+        return res.status(500).send({
+            error:true,
+            message: 'unauthorized operations'
         })
     }
 }
@@ -32,6 +43,7 @@ router.get('/user/getUserData', isloggedIn, user.getUserData);
 router.post('/user/login', user.userLogin);
 router.post('/user/logout',isloggedIn, user.userLogout);
 router.post('/user/signup', user.userSignup);
+router.get('/user/listUsers',isloggedIn, isAdmin, user.getAllUsers);
 
 
 
