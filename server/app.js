@@ -14,5 +14,5 @@ config.mongo();
 require('./routes.js')(app);
 
 // app.use(vhost('myexampletest.com',e => {}));
-const server = app.listen('4000');
-console.log('server listening @ 4000');
+const server = app.listen('3001');
+console.log('server listening @ 3001');
