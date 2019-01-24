@@ -1,7 +1,7 @@
 var octo = require('@octopusdeploy/octopackjs');
 octo.pack()    
   .append('./package.json')
-  .append('./serveri/*')
+  .append('./server/*')
   .append('./public/*')
   .append('./lib/*')
   .append('./client/*')
