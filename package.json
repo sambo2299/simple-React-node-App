@@ -12,6 +12,7 @@
     "start": "npm run client & npm run server"
   },
   "dependencies": {
+    "@octopusdeploy/octopackjs": "^0.1.0",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.1.3",
     "crypto": "^1.0.1",
@@ -23,6 +24,7 @@
     "js-file-download": "^0.4.4",
     "mongoose": "^5.3.6",
     "multer": "^1.4.0",
+    "node-jasper": "^0.2.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
