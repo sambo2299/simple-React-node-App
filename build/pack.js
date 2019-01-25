@@ -4,8 +4,7 @@ octo.pack()
   .append('./server/**')
   .append('./public/**')
   .append('./lib/**')
-  .append('./client/**')
-  .append('./node_modules/**')
+  .append('./client/**')  
   .toFile('./bin/', function (err, data) {
     console.log("Package Saved: "+ data.name);
   });
