@@ -1,4 +1,4 @@
 {
-    "rootDir": "[Root Dir Path]",
-    "mongo_database": "[mongodb Url Src]"
+    "rootDir": "/home/samyog/.octopus/Applications/OctopusServer/Linux-Env/simple-Mern/1.0.0/",
+    "mongo_database": "mongod://localhost:27017/simpleMerndb"
 }
