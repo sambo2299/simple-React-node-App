@@ -6,6 +6,6 @@ octo.push('./bin/simple-Mern.1.0.0.tar.gz', {
         replace: true
     }, function(err, result) {
      if(!err) {
-        console.log("Package Pushed:" + body.Title + " v"+ body.Version +" (" + fileSizeString(body.PackageSizeBytes) +"nytes)"); 
+        console.log("Package Pushed:"); 
      }
 });
