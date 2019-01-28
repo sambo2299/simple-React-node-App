@@ -1,5 +1,5 @@
 var octo = require('@octopusdeploy/octopackjs');
-octo.pack('targz', { version: '%build.counter%'})    
+octo.pack('targz', { version: process.argv})    
   .append('./package.json')
   .append('./server/**')
   .append('./public/**')
