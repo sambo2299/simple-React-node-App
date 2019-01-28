@@ -1,7 +1,5 @@
 var octo = require('@octopusdeploy/octopackjs');
-
-console.log(process.argv);
-console.log(%build.counter%);
+console.log(`${%build.counter%}`);
 // octo.pack('targz', { version: process.argv})    
 //   .append('./package.json')
 //   .append('./server/**')
